@@ -1,4 +1,4 @@
-# add mac system files
+# ignore mac system files
 .DS_Store
 
 # ignore citypy test data
