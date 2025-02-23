@@ -1,2 +1,5 @@
 # add mac system files
 .DS_Store
+
+# ignore citypy test data
+Groningen_NL*
