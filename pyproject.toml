@@ -16,7 +16,12 @@ esda = "^2.7.0"
 gdal = "^3.10.2"
 osmnx = "^2.0.1"
 shapely = "^2.0.7"
+folium = "^0.19.4"
+mapclassify = "^2.8.1"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]
