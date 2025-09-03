@@ -1,0 +1,3 @@
+[submodule "CityStack/citystackgen"]
+	path = CityStack/citystackgen
+	url = https://github.com/johhyeji/citystackgen-thesis.git
