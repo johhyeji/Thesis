@@ -3,3 +3,10 @@
 
 # ignore citypy test data
 Groningen_NL*
+
+# ignore poetry
+poetry.lock
+pyproject.toml
+
+# ignore presentations and P files
+files/*
