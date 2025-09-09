@@ -1,0 +1,4 @@
+[submodule "citystack/citystackgen"]
+	path = citystack/citystackgen
+	url = https://github.com/johhyeji/citystackgen-thesis.git
+	branch = master
