@@ -2,3 +2,4 @@
 	path = citystack/citystackgen
 	url = https://github.com/johhyeji/citystackgen-thesis.git
 	branch = master
+	ignore = dirty
