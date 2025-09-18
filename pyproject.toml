@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["johhyeji <150627474+johhyeji@users.noreply.github.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -18,6 +19,8 @@ osmnx = "^2.0.1"
 shapely = "^2.0.7"
 folium = "^0.19.4"
 mapclassify = "^2.8.1"
+notebook = "^7.4.5"
+ipykernel = "^6.30.1"
 
 
 [tool.poetry.group.dev.dependencies]
