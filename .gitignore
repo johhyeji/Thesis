@@ -19,3 +19,5 @@ qgis/*
 
 # ignore outdated notebook
 notebooks/eda_cbs_ipynb
+
+# ignore scratch notes
