@@ -3,3 +3,6 @@
 	url = https://github.com/johhyeji/citystackgen-thesis.git
 	branch = master
 	ignore = dirty
+[submodule "citystack/citypy"]
+	path = citystack/citypy
+	url = https://github.com/johhyeji/citypy-thesis.git
