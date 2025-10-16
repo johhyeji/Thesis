@@ -1,18 +1,19 @@
 # ignore mac system files
 .DS_Store
 
-# ignore citypy test data
+# ignore citypy test data except ones ending in .npz
 Groningen_NL*
+!Groningen_NL*.npz
 
 # ignore poetry
 poetry.lock
 pyproject.toml
 
 # ignore presentations and P files
-files/*
+files/
 
 # ignore qgis projects
-qgis/*
+qgis
 
 # ignore vscode extensions
 .vscode/*
@@ -28,3 +29,15 @@ data/bag/original/
 
 # ignore scratch notes
 notes.md
+
+# pycache
+__pycache__/
+*.pyc
+
+# temporarily ignored
+interfaces/
+rule_engine/
+*.md
+*.tex
+rule_engine_pre/viz.ipynb
+rule_engine_pre/compare_templates.py
