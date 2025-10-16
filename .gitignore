@@ -41,3 +41,6 @@ rule_engine/
 *.tex
 rule_engine_pre/viz.ipynb
 rule_engine_pre/compare_templates.py
+
+# ignore data files
+data/
