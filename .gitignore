@@ -25,3 +25,6 @@ notebooks/eda_cbs_ipynb
 
 # ignore large fils
 data/bag/original/
+
+# ignore scratch notes
+notes.md

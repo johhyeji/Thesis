@@ -1,0 +1,32 @@
+zones:
+  - name: "0_1km"
+    min_distance: 0
+    max_distance: 1000
+  - name: "1_2km"
+    min_distance: 1000
+    max_distance: 2000
+  - name: "2_5km"
+    min_distance: 2000
+    max_distance: 5000
+
+housing_rules:
+  - zone: "0_1km"
+    apartment_pct: 0.50
+    detached_pct: 0.20
+    terraced_pct: 0.30
+  - zone: "1_2km"
+    apartment_pct: 0.40
+    detached_pct: 0.40
+    terraced_pct: 0.20
+  - zone: "2_5km"
+    apartment_pct: 0.20
+    detached_pct: 0.50
+    terraced_pct: 0.30
+  
+landuse_rules:
+  - zone: "0_1km"
+    residential_pct: 0.30
+  - zone: "1_2km"
+    residential_pct: 0.60
+  - zone: "2_5km"
+    residential_pct: 0.80
