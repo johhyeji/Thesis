@@ -15,18 +15,32 @@ housing_rules:
     detached_pct: 0.20
     terraced_pct: 0.30
   - zone: "1_2km"
-    apartment_pct: 0.40
-    detached_pct: 0.40
-    terraced_pct: 0.20
+    apartment_pct: 0.10
+    detached_pct: 0.10
+    terraced_pct: 0.80
   - zone: "2_5km"
-    apartment_pct: 0.20
-    detached_pct: 0.50
+    apartment_pct: 0.10
+    detached_pct: 0.60
     terraced_pct: 0.30
   
 landuse_rules:
   - zone: "0_1km"
-    residential_pct: 0.30
+    residential_pct: 0.10
   - zone: "1_2km"
-    residential_pct: 0.60
+    residential_pct: 0.70
   - zone: "2_5km"
-    residential_pct: 0.80
+    residential_pct: 0.20
+
+household_rules:
+  - zone: "0_1km"
+    single_person_pct: 0.30
+    single_parent_pct: 0.30
+    two_parent_pct: 0.40
+  - zone: "1_2km"
+    single_person_pct: 0.20
+    single_parent_pct: 0.40
+    two_parent_pct: 0.40
+  - zone: "2_5km"
+    single_person_pct: 0.10
+    single_parent_pct: 0.50
+    two_parent_pct: 0.40

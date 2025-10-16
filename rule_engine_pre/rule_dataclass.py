@@ -45,6 +45,7 @@ class HousingRule:
                 f"{self.detached_pct:.0%} detached, "
                 f"{self.terraced_pct:.0%} terraced)")
 
+### PREPROCESSING ONLY
 # landuse rule
 @ dataclass
 class LanduseRule:
@@ -58,11 +59,37 @@ class LanduseRule:
     def __str__(self):
         return f"LanduseRule(zone = '{self.zone}': {self.residential_pct:.0%})"
 
+### POSTPROCESSING ONLY
+@ dataclass
+# add a household rule
+class HouseholdRule:
+    zone: str
+    single_person_pct: float
+    single_parent_pct: float
+    two_parent_pct: float
+
+    def __post_init__(self):
+        total = self.single_person_pct + self.single_parent_pct + self.two_parent_pct
+
+        if not (0.99 <= total <= 1.01):
+            raise ValueError(
+                f"Household percentages must sum to 1.0, got {total:.3f}\n"
+                f"  single_person: {self.single_person_pct}\n"
+                f"  single_parent: {self.single_parent_pct}\n"
+                f"  two_parent: {self.two_parent_pct}"
+            )
+    
+    def __str__(self):
+        return f"HouseholdRule(zone = '{self.zone}': {self.single_person_pct:.0%} single_person, {self.single_parent_pct:.0%} single_parent, {self.two_parent_pct:.0%} two_parent)"
+    
+
 # RuleSet: container for all rules
 @ dataclass
 class RuleSet:
     zones: List[Zone]
     housing_rules: List[HousingRule]
+    landuse_rules: List[LanduseRule]
+    household_rules: List[HouseholdRule]
 
     # find which zone a distance belongs to
     # e.g. ruleset.get_zone(500) -> Zone('0_1km': 0-1000m)
@@ -87,6 +114,13 @@ class RuleSet:
                 return rule
         return None
     
+    # get household rule for a specific zone
+    def get_household_rule(self, zone_name: str) -> HouseholdRule:
+        for rule in self.household_rules:
+            if rule.zone == zone_name:
+                return rule
+        return None
+    
     def __str__(self):
         s = "RuleSet:\n"
         s += f"  Zones: {len(self.zones)}\n"
@@ -94,6 +128,12 @@ class RuleSet:
             s += f"    - {zone}\n"
         s += f"  Housing Rules: {len(self.housing_rules)}\n"
         for rule in self.housing_rules:
+            s += f"    - {rule}\n"
+        s += f"  Landuse Rules: {len(self.landuse_rules)}\n"
+        for rule in self.landuse_rules:
+            s += f"    - {rule}\n"
+        s += f"  Household Rules: {len(self.household_rules)}\n"
+        for rule in self.household_rules:
             s += f"    - {rule}\n"
         return s
 
@@ -135,8 +175,24 @@ def load_rules_from_yaml(yaml_path: str) -> RuleSet:
             residential_pct = float(rule_data['residential_pct'])
         )
         landuse_rules.append(rule)
+
+    # parse household rules
+    household_rules = []
+    for rule_data in data.get('household_rules', []):
+        rule = HouseholdRule(
+            zone = rule_data['zone'],
+            single_person_pct = float(rule_data['single_person_pct']),
+            single_parent_pct = float(rule_data['single_parent_pct']),
+            two_parent_pct = float(rule_data['two_parent_pct'])
+        )
+        household_rules.append(rule)
+
     
-    return RuleSet(zones=zones, housing_rules=housing_rules, landuse_rules=landuse_rules)
+    return RuleSet(
+        zones=zones, 
+        housing_rules=housing_rules, 
+        landuse_rules=landuse_rules, 
+        household_rules=household_rules)
 
 
 
