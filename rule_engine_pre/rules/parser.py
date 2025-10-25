@@ -6,7 +6,9 @@ from .rule_dataclass import (
     Zone,
     HousingRule,
     LanduseRule,
-    HouseholdRule
+    HouseholdRule,
+    ResidentsRule,
+    UnitSizeRule
 )
 
 
@@ -28,7 +30,9 @@ class RuleParser:
             zones=self._parse_zones(data.get('zones', [])),
             housing_rules=self._parse_housing_rules(data.get('housing_rules', [])),
             landuse_rules=self._parse_landuse_rules(data.get('landuse_rules', [])),
-            household_rules=self._parse_household_rules(data.get('household_rules', []))
+            household_rules=self._parse_household_rules(data.get('household_rules', [])),
+            residents_rules=self._parse_residents_rules(data.get('residents_rules', [])),
+            unit_size_rules=self._parse_unit_size_rules(data.get('unit_size_rules', []))
         )
     
     def _parse_zones(self, zones_data: list) -> list:
@@ -76,3 +80,23 @@ class RuleParser:
             for rule in rules_data
         ]
 
+    def _parse_residents_rules(self, rules_data: list) -> list:
+        # parse residents rules
+        return [
+            ResidentsRule(
+                zone=rule.get('zone', ''),
+                residents_per_grid=float(rule.get('residents_per_grid', 0.0))
+            )
+            for rule in rules_data
+        ]           
+    
+    def _parse_unit_size_rules(self, rules_data: list) -> list:
+        # parse unit size rules
+        return [
+            UnitSizeRule(
+                zone=rule.get('zone', ''),
+                min_size=float(rule.get('min_size', 0.0)),
+                max_size=float(rule.get('max_size', 0.0))
+            )
+            for rule in rules_data
+        ]

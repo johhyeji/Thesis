@@ -18,6 +18,7 @@ class Zone:
     def __str__(self):
         return f"Zone('{self.name}': {self.min_distance}-{self.max_distance}m)"
 
+### ----- PREPROCESSING ONLY
 
 @ dataclass
 class HousingRule:
@@ -46,7 +47,7 @@ class HousingRule:
                 f"{self.detached_pct:.0%} detached, "
                 f"{self.terraced_pct:.0%} terraced)")
 
-### PREPROCESSING ONLY
+
 # landuse rule
 @ dataclass
 class LanduseRule:
@@ -60,7 +61,8 @@ class LanduseRule:
     def __str__(self):
         return f"LanduseRule(zone = '{self.zone}': {self.residential_pct:.0%})"
 
-### POSTPROCESSING ONLY
+### ----- POSTPROCESSING ONLY
+
 @ dataclass
 # add a household rule
 class HouseholdRule:
@@ -85,7 +87,21 @@ class HouseholdRule:
                 f"{self.single_person_pct:.0%} single_person, "
                 f"{self.single_parent_pct:.0%} single_parent, "
                 f"{self.two_parent_pct:.0%} two_parent)")
+
+# residentsrule (per grid - density indicator) -> household assignment (per building)
+@ dataclass
+class ResidentsRule:
+    zone: str
+    residents_per_grid: float
+
+# unit size rule
+@ dataclass
+class UnitSizeRule:
+    zone: str
+    min_size: float
+    max_size: float
     
+### ----- FINAL RULE SET
 
 # RuleSet: container for all rules
 @ dataclass
@@ -94,6 +110,8 @@ class RuleSet:
     housing_rules: List[HousingRule]
     landuse_rules: List[LanduseRule]
     household_rules: List[HouseholdRule]
+    residents_rules: List[ResidentsRule]
+    unit_size_rules: List[UnitSizeRule]
 
     # find which zone a distance belongs to
     # e.g. ruleset.get_zone(500) -> Zone('0_1km': 0-1000m)
@@ -125,6 +143,20 @@ class RuleSet:
                 return rule
         return None
     
+    # get residents rule for a specific zone
+    def get_residents_rule(self, zone_name: str) -> ResidentsRule:
+        for rule in self.residents_rules:
+            if rule.zone == zone_name:
+                return rule
+        return None
+    
+    # get unit size rule for a specific zone
+    def get_unit_size_rule(self, zone_name: str) -> UnitSizeRule:
+        for rule in self.unit_size_rules:
+            if rule.zone == zone_name:
+                return rule
+        return None
+    
     def __str__(self):
         s = "RuleSet:\n"
         s += f"  Zones: {len(self.zones)}\n"
@@ -138,6 +170,12 @@ class RuleSet:
             s += f"    - {rule}\n"
         s += f"  Household Rules: {len(self.household_rules)}\n"
         for rule in self.household_rules:
+            s += f"    - {rule}\n"
+        s += f"  Residents Rules: {len(self.residents_rules)}\n"
+        for rule in self.residents_rules:
+            s += f"    - {rule}\n"
+        s += f"  Unit Size Rules: {len(self.unit_size_rules)}\n"
+        for rule in self.unit_size_rules:
             s += f"    - {rule}\n"
         return s
 
