@@ -13,7 +13,7 @@ pyproject.toml
 files/
 
 # ignore qgis projects
-qgis
+qgis/
 
 # ignore vscode extensions
 .vscode/*
@@ -34,6 +34,9 @@ notes.md
 __pycache__/
 *.pyc
 
+# ignore large data files
+data/*
+
 # temporarily ignored
 interfaces/
 rule_engine/
@@ -42,5 +45,4 @@ rule_engine/
 rule_engine_pre/viz.ipynb
 rule_engine_pre/compare_templates.py
 
-# ignore data files
-data/
+
