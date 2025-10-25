@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Tuple
-from rule_dataclass import RuleSet
+from rule_engine_pre.rules.rule_dataclass import RuleSet
+from rule_engine_pre.rules.parser import RuleParser
 
 # CityPy templates are NumPy arrays stored in NPZ files
 # bldg classes stored in 2D grid

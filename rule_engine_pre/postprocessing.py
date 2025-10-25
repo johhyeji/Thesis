@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 from typing import Tuple
-from rule_dataclass import RuleSet
-from rule_dataclass import load_rules_from_yaml
+from rule_engine_pre.rules.rule_dataclass import RuleSet
+from rule_engine_pre.rules.parser import RuleParser
 from preprocessing import BUILDING_CLASSES
 
 """
@@ -303,7 +303,8 @@ def postprocess_citystackgen_output(
     
     # 3. load rules
     print("\n[3] Loading rules...")
-    rules = load_rules_from_yaml(rules_yaml)
+    parser = RuleParser()
+    rules = parser.load_from_yaml(rules_yaml)
     print(f"  Loaded {len(rules.zones)} zones")
     print(f"  Loaded {len(rules.housing_rules)} housing rules")
     
