@@ -77,7 +77,7 @@ def postprocess_citystackgen_output(
         Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
         
         print(f"\n[6] Saving building data to: {output_csv}")
-        # Convert to regular DataFrame for CSV (drop geometry column)
+        # convert to regular DataFrame for CSV (drop geometry column - not needed for CSV)
         csv_data = final_buildings.drop(columns=['geometry'])
         csv_data.to_csv(output_csv, index=False)
         print(f"  ✓ Saved building data")
