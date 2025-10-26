@@ -65,14 +65,20 @@ def postprocess_citystackgen_output(
     
     # 5. save results
     if output_geojson:
+        # create output directory if it doesn't exist
+        Path(output_geojson).parent.mkdir(parents=True, exist_ok=True)
+        
         print(f"\n[5] Saving classified buildings to: {output_geojson}")
         final_buildings.to_file(output_geojson, driver='GeoJSON')
         print(f"  ✓ Saved {len(final_buildings)} buildings")
     
     if output_csv:
+        # create output directory if it doesn't exist
+        Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
+        
         print(f"\n[6] Saving building data to: {output_csv}")
-        # Convert to regular DataFrame for CSV
-        csv_data = final_buildings.drop(columns=['geometry', 'centroid'])
+        # Convert to regular DataFrame for CSV (drop geometry column)
+        csv_data = final_buildings.drop(columns=['geometry'])
         csv_data.to_csv(output_csv, index=False)
         print(f"  ✓ Saved building data")
     

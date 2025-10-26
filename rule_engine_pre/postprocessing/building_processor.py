@@ -44,10 +44,9 @@ Postprocessing:
 def load_buildings_from_geojson(geojson_path: str) -> gpd.GeoDataFrame:
     buildings_gdf = gpd.read_file(geojson_path)
     
-    # get centroids
-    buildings_gdf['centroid'] = buildings_gdf.geometry.centroid
-    buildings_gdf['x'] = buildings_gdf['centroid'].x
-    buildings_gdf['y'] = buildings_gdf['centroid'].y
+    # get centroids (as x, y coordinates - not as geometry column)
+    buildings_gdf['x'] = buildings_gdf.geometry.centroid.x
+    buildings_gdf['y'] = buildings_gdf.geometry.centroid.y
     
     # calculate area
     buildings_gdf['area_m2'] = buildings_gdf.geometry.area

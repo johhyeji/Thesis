@@ -141,6 +141,10 @@ class TemplateModifier:
                     stats['by_zone_and_type'][zone.name].get(building_type, 0) + 1
         
         # 4. save modified template (CityStackGen-compatible: only 3 arrays!)
+        # create output directory if it doesn't exist
+        output_path_obj = Path(output_path)
+        output_path_obj.parent.mkdir(parents=True, exist_ok=True)
+        
         np.savez(
             output_path, 
             building_class=building_grid, 
