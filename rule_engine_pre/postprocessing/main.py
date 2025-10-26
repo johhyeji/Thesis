@@ -1,8 +1,16 @@
 import pandas as pd
 import geopandas as gpd
+import sys
+from pathlib import Path
 from typing import Tuple
-from .building_processor import BuildingProcessor, load_buildings_from_geojson, get_city_center_from_geojson
-from ..rules.parser import RuleParser
+
+# add parent directory to path for imports
+PARENT_DIR = Path(__file__).parent.parent
+if str(PARENT_DIR) not in sys.path:
+    sys.path.insert(0, str(PARENT_DIR))
+
+from postprocessing.building_processor import BuildingProcessor, load_buildings_from_geojson, get_city_center_from_geojson
+from rules.parser import RuleParser
 
 
 def postprocess_citystackgen_output(

@@ -1,6 +1,7 @@
 import yaml
 from pathlib import Path
 from typing import Union
+
 from .rule_dataclass import (
     RuleSet,
     Zone,

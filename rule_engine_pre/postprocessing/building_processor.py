@@ -1,10 +1,18 @@
 import numpy as np
 import pandas as pd
 import geopandas as gpd
+import sys
+from pathlib import Path
 from typing import Tuple
-from ..rules.rule_dataclass import RuleSet
-from ..rules.parser import RuleParser
-from ..preprocessing.template_modifier import BUILDING_CLASSES
+
+# add parent directory to path for imports
+PARENT_DIR = Path(__file__).parent.parent # 2 levesl up
+if str(PARENT_DIR) not in sys.path:
+    sys.path.insert(0, str(PARENT_DIR))
+
+from rules.rule_dataclass import RuleSet
+from rules.parser import RuleParser
+from preprocessing.template_modifier import BUILDING_CLASSES
 
 """
 CityStackGen output run with 

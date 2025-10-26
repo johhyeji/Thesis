@@ -44,3 +44,22 @@ household_rules:
     single_person_pct: 0.10
     single_parent_pct: 0.50
     two_parent_pct: 0.40
+
+residents_rules:
+  - zone: "0_1km"
+    residents_per_grid: 150.0
+  - zone: "1_2km"
+    residents_per_grid: 100.0
+  - zone: "2_5km"
+    residents_per_grid: 50.0
+
+unit_size_rules:
+  - zone: "0_1km"
+    min_size: 40.0
+    max_size: 80.0
+  - zone: "1_2km"
+    min_size: 60.0
+    max_size: 120.0
+  - zone: "2_5km"
+    min_size: 80.0
+    max_size: 200.0

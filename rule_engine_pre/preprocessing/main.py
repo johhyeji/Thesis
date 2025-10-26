@@ -1,7 +1,15 @@
 import numpy as np
+import sys
+from pathlib import Path
 from typing import Dict
-from .template_modifier import TemplateModifier
-from ..rules.parser import RuleParser
+
+# add parent directory to path for imports
+PARENT_DIR = Path(__file__).parent.parent
+if str(PARENT_DIR) not in sys.path:
+    sys.path.insert(0, str(PARENT_DIR))
+
+from preprocessing.template_modifier import TemplateModifier
+from rules.parser import RuleParser
 
 # move all printing from template_modifier to here
 

@@ -1,16 +1,13 @@
 import numpy as np
-import sys
-from pathlib import Path
-from typing import Tuple, Dict
+from typing import Tuple
+from rule_engine_pre.rules.rule_dataclass import RuleSet
+from rule_engine_pre.rules.parser import RuleParser
 
-# add parent directory to path for imports
-PARENT_DIR = Path(__file__).parent.parent
-if str(PARENT_DIR) not in sys.path:
-    sys.path.insert(0, str(PARENT_DIR))
-
-from rules.rule_dataclass import RuleSet
-from rules.parser import RuleParser
-
+# CityPy templates are NumPy arrays stored in NPZ files
+# bldg classes stored in 2D grid
+# street clusters stored in 2D grid
+# city center stored in 2D grid (only one cell with value 1)
+# 100m x 100m grid cells
 
 BUILDING_CLASSES = {
     'apartment': 14,
@@ -19,6 +16,9 @@ BUILDING_CLASSES = {
     'none': 99
 }
 
+BUILDING_CLASS_NAMES = {v: k for k, v in BUILDING_CLASSES.items()}
+
+# zone ids for visualization
 ZONE_IDS = {
     '0_1km': 0,
     '1_2km': 1,
@@ -42,19 +42,25 @@ class TemplateModifier:
         
         """
     
-    def __init__(self, rules: RuleSet, random_seed: int = 42): # FIXME: keep random seed fixed for now
+    def __init__(self, rules: RuleSet, random_seed: int = 42):
         self.rules = rules
-        # create independent random generator for reproducibility
+        # Create independent random generator for reproducibility
         self.rng = np.random.default_rng(random_seed)
+        print(f"  Initialized with random seed: {random_seed}")
 
     def modify_template(
         self,
         input_path: str,
         output_path: str,
         cell_size: float = 100.0
-    ) -> dict: # returns dict with modification stats
+    ) -> dict: # returns dict with statistics about the modification
 
+        print(f"\n{'='*60}")
+        print("PREPROCESSING: modify NPZ template")
+        print('='*60)
+        
         # 1. load template
+        print(f"\n 1. Loading template from: {input_path}")
         data = np.load(input_path)
 
         building_grid = data['building_class'].copy()
@@ -65,7 +71,10 @@ class TemplateModifier:
         zone_grid = np.full(building_grid.shape, 99, dtype=np.int32)  # 99 = unknown
 
         rows, cols = building_grid.shape
-
+        print(f"   Grid size: {rows} x {cols} cells")
+        print(f"   Cell size: {cell_size}m")
+        print(f"   Coverage: {rows * cell_size/1000:.1f} x {cols * cell_size/1000:.1f} km")
+        
         # 2. find city center position
         center_row, center_col = np.where(city_center_grid == 1)
         if len(center_row) > 0:
@@ -76,7 +85,13 @@ class TemplateModifier:
             center_x = cols * cell_size / 2
             center_y = rows * cell_size / 2
         
+        print(f"   City center: grid[{center_row[0] if len(center_row) > 0 else rows//2}, "
+              f"{center_col[0] if len(center_col) > 0 else cols//2}]")
+        print(f"   City center: ({center_x:.0f}, {center_y:.0f}) -> relative to grid origin (0,0)")
+        
         # 3. modify each cell
+        print(f"\n 2. Modifying grid cells based on zone rules...")
+        
         stats = {
             'total_cells': rows * cols,
             'by_zone': {},
@@ -140,19 +155,26 @@ class TemplateModifier:
                     stats['by_zone_and_type'][zone.name].get(building_type, 0) + 1
         
         # 4. save modified template (CityStackGen-compatible: only 3 arrays!)
+        print(f"\n 3. Saving modified template to: {output_path}")
         np.savez(
             output_path, 
             building_class=building_grid, 
             cluster_street=street_grid, 
             city_center=city_center_grid)
-
-
+        
+        print(f"   ✓ Saved modified template")
+        
         # 5. save zone grid separately for visualization
         zone_output = output_path.replace('.npz', '_zones.npz')
         np.savez(
             zone_output,
             zone_grid=zone_grid,
             city_center=city_center_grid)
+        
+        print(f"   ✓ Saved zone grid to: {zone_output}")   
+
+        # print statistics
+        self._print_statistics(stats)
         
         return stats
     
@@ -162,3 +184,23 @@ class TemplateModifier:
         probabilities = [housing_rule.apartment_pct, housing_rule.detached_pct, housing_rule.terraced_pct]
         return self.rng.choice(types, p = probabilities)
 
+    def _print_statistics(self, stats: dict):
+        print(f"\n{'='*60}")
+        print("PREPROCESSING: Statistics")
+        print('='*60)
+        
+        total = stats['total_cells']
+        
+        print(f"\nTotal cells: {total}")
+        
+        print(f"\nCells by zone:")
+        for zone, count in sorted(stats['by_zone'].items()):
+            pct = (count / total) * 100
+            print(f"  {zone:15s}: {count:5d} cells ({pct:5.1f}%)")
+        
+        print(f"\nCells by building type:")
+        for btype, count in sorted(stats['by_type'].items()):
+            pct = (count / total) * 100
+            print(f"  {btype:15s}: {count:5d} cells ({pct:5.1f}%)")
+        
+        print(f"{'='*60}")
