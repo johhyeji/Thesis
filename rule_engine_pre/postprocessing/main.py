@@ -59,11 +59,6 @@ def postprocess_citystackgen_output(
     print(f"  Loaded {len(rules.unit_size_rules)} unit size rules")
     
     # 4. process buildings (includes household assignment)
-    # generate random seed if not provided
-    if random_seed is None:
-        random_seed = random.randint(0, 1000000)
-        print(f"Random seed not provided, generated: {random_seed}")
-        
     print(f"\n[4] Processing buildings...")
     processor = BuildingProcessor(rules, random_seed=random_seed)
     final_buildings = processor.process_buildings(buildings_gdf, city_center)
