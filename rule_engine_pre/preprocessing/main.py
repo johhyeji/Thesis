@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import random
 from pathlib import Path
 from typing import Dict
 
@@ -18,7 +19,7 @@ def modify_template_with_stats(
     output_path: str,
     rules_yaml: str,
     cell_size: float = 100.0,
-    random_seed: int = 42
+    random_seed: int = None
 ) -> Dict:
     """
     Modify template with full statistics and printing
@@ -36,6 +37,11 @@ def modify_template_with_stats(
     print(f"\n{'='*60}")
     print("PREPROCESSING: modify NPZ template")
     print('='*60)
+    
+    # generate random seed if not provided
+    if random_seed is None:
+        random_seed = random.randint(0, 1000000)
+        print(f"Random seed not provided, generated: {random_seed}")
     
     # 1. load rules
     print(f"\n[1] Loading rules from: {rules_yaml}")

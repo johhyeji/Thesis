@@ -42,9 +42,10 @@ class TemplateModifier:
         
         """
     
-    def __init__(self, rules: RuleSet, random_seed: int = 42): # FIXME: keep random seed fixed for now
+    def __init__(self, rules: RuleSet, random_seed: int = None):
         self.rules = rules
         # create independent random generator for reproducibility
+        # Note: random_seed should already be handled by caller (main.py)
         self.rng = np.random.default_rng(random_seed)
 
     def modify_template(

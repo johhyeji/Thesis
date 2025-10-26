@@ -69,9 +69,9 @@ def get_city_center_from_geojson(geojson_path: str) -> Tuple[float, float]:
 
 class BuildingProcessor:
 
-    def __init__(self, rules: RuleSet, random_seed: int = 123):
+    def __init__(self, rules: RuleSet, random_seed: int = None):
         self.rules = rules
-        # Create independent random generator for reproducibility
+        # create independent random generator 
         self.rng = np.random.default_rng(random_seed)
         
     # process buildings based on zone rules

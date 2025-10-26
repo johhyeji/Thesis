@@ -1,5 +1,6 @@
 import pandas as pd
 import geopandas as gpd
+import random
 import sys
 from pathlib import Path
 from typing import Tuple
@@ -19,7 +20,7 @@ def postprocess_citystackgen_output(
     rules_yaml: str,
     output_geojson: str = None,
     output_csv: str = None,
-    random_seed: int = 123
+    random_seed: int = None 
 ) -> gpd.GeoDataFrame:
     """
     Postprocess CityStackGen output with full statistics and printing
@@ -30,7 +31,7 @@ def postprocess_citystackgen_output(
         rules_yaml: Path to rules YAML file
         output_geojson: Path to output GeoJSON (optional)
         output_csv: Path to output CSV (optional)
-        random_seed: Random seed for reproducibility
+        random_seed: Random seed for reproducibility (optional)
         
     Returns:
         GeoDataFrame with processed buildings (classified with zones, types, households)
@@ -58,6 +59,11 @@ def postprocess_citystackgen_output(
     print(f"  Loaded {len(rules.unit_size_rules)} unit size rules")
     
     # 4. process buildings (includes household assignment)
+    # generate random seed if not provided
+    if random_seed is None:
+        random_seed = random.randint(0, 1000000)
+        print(f"Random seed not provided, generated: {random_seed}")
+        
     print(f"\n[4] Processing buildings...")
     processor = BuildingProcessor(rules, random_seed=random_seed)
     final_buildings = processor.process_buildings(buildings_gdf, city_center)
