@@ -9,6 +9,7 @@ zones:
     min_distance: 2000
     max_distance: 5000
 
+# preprocessing - template modification
 housing_rules:
   - zone: "0_1km"
     apartment_pct: 0.50
@@ -31,6 +32,7 @@ landuse_rules:
   - zone: "2_5km"
     residential_pct: 0.20
 
+# postprocessing - household distribution
 household_rules:
   - zone: "0_1km"
     single_person_pct: 0.30

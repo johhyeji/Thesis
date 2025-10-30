@@ -38,11 +38,7 @@ __pycache__/
 data/*
 
 # temporarily ignored
-interfaces/
-rule_engine/
 *.md
 *.tex
-rule_engine_pre/viz.ipynb
-rule_engine_pre/compare_templates.py
-
+misc/
 
