@@ -36,6 +36,7 @@ __pycache__/
 
 # ignore large data files
 data/*
+*.gpkg
 
 # temporarily ignored
 *.md
